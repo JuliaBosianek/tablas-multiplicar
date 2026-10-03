@@ -1,14 +1,18 @@
 const btnsTablas = document.querySelectorAll(".btn-tabla");
 const multiplicacion = document.querySelector("#multiplicacion");
+const respuesta = document.querySelector("#respuesta");
+const resultado = document.querySelector("#resultado");    //texto si el resultado esta o no esta correcto
 let resultadoCorrecto;  //creado fuera para poder usarlo con btn Validar q necesita variables del forEach
 
 
 //recorrer todos los botones de las tablas + evento
 btnsTablas.forEach(btn=>{
     btn.addEventListener("click",()=>{
+
+        resultado.textContent = "";
         
         const tabla=btn.value;
-        //creando numero aleatorio 1-10; Math.random() genera numeros 0-9.99..., floor redondea hacia abajo
+        // Genera un número aleatorio entero entre 1 y 10
         const aleatorio = Math.floor(Math.random()*10)+1;
 
         if(tabla==="todas"){
@@ -25,20 +29,22 @@ btnsTablas.forEach(btn=>{
 });
 
 //comprobación con el botón Validar la respuesta insertada
-btnValidar=document.querySelector("#validar");
+const btnValidar=document.querySelector("#validar");
 
 btnValidar.addEventListener("click", ()=>{
 
     const respuestaUsuario = Number(respuesta.value);
 
     if(respuestaUsuario===resultadoCorrecto){
-        console.log("Correcto!");
+        resultado.textContent="Correcto!";
     }else{
-        console.log("Incorrecto");
+        resultado.textContent="Incorrecto";
     }
 
     respuesta.value="";
 });
+
+
 
 
 
