@@ -46,3 +46,23 @@ h1 {
     padding: 8px 15px;
 }
 
+#zona-profesor {
+    text-align: center;
+}
+
+#zona-profesor img {
+    width: 180px;
+    max-width: 50%;
+}
+
+@keyframes metronomo {
+    from {
+        transform: rotate(-8deg);
+    } to {
+        transform: rotate(8deg);
+    }
+}
+
+.profesor-enfadado {
+    animation: metronomo 0.5s ease-in-out infinite alternate;
+}
