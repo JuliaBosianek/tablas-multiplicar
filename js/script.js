@@ -18,20 +18,23 @@ let multiplicacionActual;
 let profesorMostrado = false;
 let multiplicacionesPendientes = [];
 let multiplicadorActual;
+let multiplicacionSeleccionada;
 let mostrandoSolucion = false;
 let rondaTerminada = false;
 
 function generarPregunta(tabla){
 
-    if(tabla==="todas"){
+    if(tabla === "todas"){
 
-        const aleatorio = Math.floor(Math.random()*10)+1;
-        const aleatorio2 = Math.floor(Math.random()*10)+1;
+        const indiceAleatorio = Math.floor(Math.random()*multiplicacionesPendientes.length);
 
-        multiplicacionActual=`${aleatorio} x ${aleatorio2}`;
+        multiplicacionSeleccionada = multiplicacionesPendientes.splice(indiceAleatorio, 1)[0];
+
+        multiplicacionActual = `${multiplicacionSeleccionada[0]} x ${multiplicacionSeleccionada[1]}`;
+
         multiplicacion.textContent=multiplicacionActual;
 
-        resultadoCorrecto= aleatorio * aleatorio2;
+        resultadoCorrecto = multiplicacionSeleccionada[0] * multiplicacionSeleccionada[1];
         
     }else{
 
@@ -46,11 +49,30 @@ function generarPregunta(tabla){
     };
 };
 
+//multiplicaciones sin repetir de las tablas "TODAS" 
+function crearMultiplicacionesTodas(){
+
+    multiplicacionesPendientes = [];
+
+    for(let tabla = 1; tabla <= 10; tabla++){
+
+        for(let multiplicador = 1; multiplicador <=10; multiplicador++){
+
+            multiplicacionesPendientes.push([tabla, multiplicador])
+        }
+    }
+}
+
 function comprobarFinRonda(){
 
     if(multiplicacionesPendientes.length===0){
-        
+
+        if(tablaSeleccionada === "todas"){
+            resultado.textContent = "¡Has completado todas las tablas! 🎉 Elige otra para seguir ganando puntos :)";
+        }else{
         resultado.textContent="¡Has completado la tabla! 🎉 Elige otra para seguir ganando puntos :)";
+        };
+
         multiplicacion.textContent = "";
 
         rondaTerminada = true;
@@ -80,9 +102,18 @@ btnsTablas.forEach(btn=>{
         
         tablaSeleccionada=btn.value;
 
-        if(tablaSeleccionada !== "todas"){
+        fallosPregunta = 0;
+
+        respuesta.value = "";
+
+        if(tablaSeleccionada === "todas"){
+
+            crearMultiplicacionesTodas();
+
+        }else{
+
             multiplicacionesPendientes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        }
+        };
         
         generarPregunta(tablaSeleccionada);
     });
@@ -149,7 +180,13 @@ btnValidar.addEventListener("click", ()=>{
 
            multiplicacion.textContent=`${multiplicacionActual} = ${resultadoCorrecto}`;
 
-           multiplicacionesPendientes.push(multiplicadorActual);    //multiplicacion fallada vuelve al final
+           if(tablaSeleccionada === "todas"){
+
+              multiplicacionesPendientes.push(multiplicacionSeleccionada);
+           }else{
+
+              multiplicacionesPendientes.push(multiplicadorActual);    //multiplicacion fallada vuelve al final
+           };
 
            fallosPregunta = 0;
            mostrandoSolucion = true;
